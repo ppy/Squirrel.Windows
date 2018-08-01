@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.8.0.1</version>
+    <version>1.8.0.2</version>
     <authors>GitHub</authors>
     <owners>Paul Betts</owners>
-    <licenseUrl>https://github.com/squirrel/Squirrel.Windows/blob/master/COPYING</licenseUrl>
-    <projectUrl>https://github.com/squirrel/Squirrel.Windows</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Squirrel/Squirrel.Windows/master/docs/artwork/Squirrel-Logo-Square.png</iconUrl>
+    <licenseUrl>https://github.com/ppy/Squirrel.Windows/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://github.com/ppy/Squirrel.Windows</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ppy/Squirrel.Windows/master/docs/artwork/Squirrel-Logo-Square.png</iconUrl>
 
     <dependencies>
       <dependency id="DeltaCompressionDotNet" version="2.0.0.0" />
