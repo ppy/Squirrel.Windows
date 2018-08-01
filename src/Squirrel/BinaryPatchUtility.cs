@@ -148,7 +148,7 @@ namespace Squirrel.Bsdiff
                         int s = 0;
                         int sf = 0;
                         int lenf = 0;
-                        for (int i = 0; (lastscan + i < scan) && (lastpos + i < oldData.Length); )
+                        for (int i = 0; (lastscan + i < scan) && (lastpos + i < oldData.Length);)
                         {
                             if (oldData[lastpos + i] == newData[lastscan + i])
                                 s++;
@@ -230,10 +230,13 @@ namespace Squirrel.Bsdiff
             WriteInt64(controlEndPosition - startPosition - c_headerSize, header, 8);
 
             // write compressed diff data
-            using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
-            using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress, true))
+            if (dblen > 0)
             {
-                bz2Stream.Write(db, 0, dblen);
+                using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
+                using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress, true))
+                {
+                    bz2Stream.Write(db, 0, dblen);
+                }
             }
 
             // compute size of compressed diff data
@@ -241,10 +244,13 @@ namespace Squirrel.Bsdiff
             WriteInt64(diffEndPosition - controlEndPosition, header, 16);
 
             // write compressed extra data
-            using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
-            using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress, true))
+            if (eblen > 0)
             {
-                bz2Stream.Write(eb, 0, eblen);
+                using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
+                using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress, true))
+                {
+                    bz2Stream.Write(eb, 0, eblen);
+                }
             }
 
             // seek to the beginning, write the header, then seek back to end
