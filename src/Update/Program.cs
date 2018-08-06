@@ -135,7 +135,8 @@ namespace Squirrel.Update
                     { "framework-version=", "Set the required .NET framework version, e.g. net461", v => frameworkVersion = v },
                 };
 
-                target = target.Replace(".dll", ".exe");
+                if (target != null)
+                    target = target.Replace(".dll", ".exe");
 
                 opts.Parse(args);
 
