@@ -135,6 +135,8 @@ namespace Squirrel.Update
                     { "framework-version=", "Set the required .NET framework version, e.g. net461", v => frameworkVersion = v },
                 };
 
+                target = target.Replace(".dll", ".exe");
+
                 opts.Parse(args);
 
                 // NB: setupIcon and icon are just aliases for compatibility
@@ -533,7 +535,7 @@ namespace Squirrel.Update
                 .FirstOrDefault(x => Directory.Exists(x));
 
             // Check for the EXE name they want
-            var targetExe = new FileInfo(Path.Combine(latestAppDir, exeName.Replace("%20", " ").Replace(".dll", ".exe")));
+            var targetExe = new FileInfo(Path.Combine(latestAppDir, exeName.Replace("%20", " ")));
             this.Log().Info("Want to launch '{0}'", targetExe);
 
             // Check for path canonicalization attacks
