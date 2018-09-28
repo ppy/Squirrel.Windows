@@ -636,28 +636,40 @@ namespace Squirrel.Update
 
         static async Task signPEFile(string exePath, string signingOpts)
         {
-            // Try to find SignTool.exe
-            var exe = @".\signtool.exe";
-            if (!File.Exists(exe)) {
-                exe = Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "signtool.exe");
+            int tries = 10;
+            while (tries-- > 0)
+            {
+                // Try to find SignTool.exe
+                var exe = @".\signtool.exe";
+                if (!File.Exists(exe))
+                {
+                    exe = Path.Combine(
+                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        "signtool.exe");
 
-                // Run down PATH and hope for the best
-                if (!File.Exists(exe)) exe = "signtool.exe";
-            }
+                    // Run down PATH and hope for the best
+                    if (!File.Exists(exe)) exe = "signtool.exe";
+                }
 
-            var processResult = await Utility.InvokeProcessAsync(exe,
-                String.Format("sign {0} \"{1}\"", signingOpts, exePath), CancellationToken.None);
+                var processResult = await Utility.InvokeProcessAsync(exe,
+                    String.Format("sign {0} \"{1}\"", signingOpts, exePath), CancellationToken.None);
 
-            if (processResult.Item1 != 0) {
-                var optsWithPasswordHidden = new Regex(@"/p\s+\w+").Replace(signingOpts, "/p ********");
-                var msg = String.Format("Failed to sign, command invoked was: '{0} sign {1} {2}'",
-                    exe, optsWithPasswordHidden, exePath);
+                if (processResult.Item1 != 0)
+                {
+                    var optsWithPasswordHidden = new Regex(@"/p\s+\w+").Replace(signingOpts, "/p ********");
+                    var msg = String.Format("Failed to sign, command invoked was: '{0} sign {1} {2}'",
+                        exe, optsWithPasswordHidden, exePath);
 
-                throw new Exception(msg);
-            } else {
-                Console.WriteLine(processResult.Item2);
+                    if (tries == 0)
+                        throw new Exception(msg);
+                    else
+                        Thread.Sleep(1000);
+                }
+                else
+                {
+                    Console.WriteLine(processResult.Item2);
+                    break;
+                }
             }
         }
         bool isPEFileSigned(string path)
