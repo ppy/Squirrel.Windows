@@ -658,8 +658,8 @@ namespace Squirrel.Update
                 if (processResult.Item1 != 0)
                 {
                     var optsWithPasswordHidden = new Regex(@"/p\s+\w+").Replace(signingOpts, "/p ********");
-                    var msg = String.Format("Failed to sign, command invoked was: '{0} sign {1} {2}'",
-                        exe, optsWithPasswordHidden, exePath);
+                    var msg = string.Format("Failed to sign, command invoked was: '{0} sign {1} {2}'", exe, optsWithPasswordHidden, exePath);
+                    msg += "\n" + processResult.Item2;
 
                     if (tries == 0)
                         throw new Exception(msg);
