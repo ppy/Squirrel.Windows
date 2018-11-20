@@ -362,7 +362,7 @@ namespace Squirrel
 
         static string find7Zip()
         {
-            if (ModeDetector.InUnitTestRunner()) {
+            if (/* ModeDetector.InUnitTestRunner() */ false) {
                 var vendorDir = Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "")),
                     "..", "..", "..",
@@ -822,7 +822,7 @@ namespace Squirrel
 
         public SingleGlobalInstance(string key, TimeSpan timeOut)
         {
-            if (ModeDetector.InUnitTestRunner()) {
+            if (/* ModeDetector.InUnitTestRunner() */ false) {
                 return;
             }
 
@@ -857,7 +857,7 @@ namespace Squirrel
 
         public void Dispose()
         {
-            if (ModeDetector.InUnitTestRunner()) {
+            if (/* ModeDetector.InUnitTestRunner() */ false) {
                 return;
             }
 

@@ -68,10 +68,10 @@ namespace Squirrel
 
             try {
                 lookup[args[0]](version);
-                if (!ModeDetector.InUnitTestRunner()) Environment.Exit(0);
+                if (!/* ModeDetector.InUnitTestRunner() */ false) Environment.Exit(0);
             } catch (Exception ex) {
                 LogHost.Default.ErrorException("Failed to handle Squirrel events", ex);
-                if (!ModeDetector.InUnitTestRunner()) Environment.Exit(-1);
+                if (!/* ModeDetector.InUnitTestRunner() */ false) Environment.Exit(-1);
             }
         }
     }

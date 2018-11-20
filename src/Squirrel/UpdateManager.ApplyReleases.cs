@@ -246,7 +246,7 @@ namespace Squirrel
                         sl.SetToastActivatorCLSID(toastActivatorCLSID);
 
                         this.Log().Info("About to save shortcut: {0} (target {1}, workingDir {2}, args {3}, toastActivatorCSLID {4})", file, sl.Target, sl.WorkingDirectory, sl.Arguments, toastActivatorCLSID);
-                        if (ModeDetector.InUnitTestRunner() == false) sl.Save(file);
+                        if (/* ModeDetector.InUnitTestRunner() */ false == false) sl.Save(file);
                     }, 4), "Can't write shortcut: " + file);
                 }
 

@@ -100,7 +100,7 @@ namespace Squirrel
 
             // NB: Our test fixtures use packages that aren't SemVer compliant, 
             // we don't really care that they aren't valid
-            if (!ModeDetector.InUnitTestRunner() && !SemanticVersion.TryParseStrict(package.Version.ToString(), out dontcare)) {
+            if (!/* ModeDetector.InUnitTestRunner() */ false && !SemanticVersion.TryParseStrict(package.Version.ToString(), out dontcare)) {
                 throw new Exception(
                     String.Format(
                         "Your package version is currently {0}, which is *not* SemVer-compatible, change this to be a SemVer version number",
