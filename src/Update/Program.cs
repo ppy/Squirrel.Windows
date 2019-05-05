@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Mono.Options;
+using NuGet;
+using Splat;
+using Squirrel.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,13 +11,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Mono.Options;
-using Splat;
-using Squirrel.Json;
-using NuGet;
-using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace Squirrel.Update
 {
@@ -34,9 +35,35 @@ namespace Squirrel.Update
             } catch (Exception ex) {
                 // NB: Normally this is a terrible idea but we want to make
                 // sure Setup.exe above us gets the nonzero error code
+                NotifyUser(ex);
                 Console.Error.WriteLine(ex);
                 return -1;
             }
+        }
+
+        /// <summary>
+        ///     Notifies the user with a <see cref="MessageBox"/> if anything went wrong while installing.
+        /// </summary>
+        private static void NotifyUser(Exception ex)
+        {
+            string messages;
+            if (ex is AggregateException aggregate)
+            {
+                var allExceptions = aggregate.Flatten().InnerExceptions;
+                var allMessages = allExceptions.Select(e => e.Message).Where(m => !string.IsNullOrWhiteSpace(m));
+                messages = string.Join(Environment.NewLine, allMessages);
+            }
+            else
+            {
+                messages = ex.Message;
+            }
+
+            MessageBox.Show(
+                $"Installation error(s):{Environment.NewLine}{messages}",
+                "osu! installation error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error,
+                MessageBoxResult.OK);
         }
 
         int main(string[] args)
