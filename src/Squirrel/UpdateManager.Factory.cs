@@ -45,9 +45,6 @@ namespace Squirrel
             var releasesApiBuilder = new StringBuilder("repos")
                 .Append(repoUri.AbsolutePath)
                 .Append("/releases");
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                releasesApiBuilder.Append("?access_token=").Append(accessToken);
             
             Uri baseAddress;
 
@@ -66,6 +63,10 @@ namespace Squirrel
 
             using (var client = new HttpClient() { BaseAddress = baseAddress }) {
                 client.DefaultRequestHeaders.UserAgent.Add(userAgent);
+
+                if (!string.IsNullOrWhiteSpace(accessToken))
+                    client.DefaultRequestHeaders.Add("Authorization", $"token {accessToken}");
+
                 var response = await client.GetAsync(releasesApiBuilder.ToString());
                 response.EnsureSuccessStatusCode();
 
